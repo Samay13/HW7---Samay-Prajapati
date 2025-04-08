@@ -1,6 +1,6 @@
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Samay Prajapati / 002
  *
  *   This java file contains the problem solutions for the methods selectionSort,
  *   mergeSortDivisibleByKFirst, asteroidsDestroyed, and numRescueCanoes methods.
@@ -29,6 +29,7 @@ public class ProblemSolutions {
      */
 
     public  void selectionSort(int[] values) {
+
         selectionSort(values, true);
     }
 
@@ -41,7 +42,25 @@ public class ProblemSolutions {
             // YOU CODE GOES HERE -- COMPLETE THE INNER LOOP OF THIS
             // "SELECTION SORT" ALGORITHM.
             // DO NOT FORGET TO ADD YOUR NAME / SECTION ABOVE
+            int index = i;
 
+            for (int j = i + 1; j < n; j++) {
+                if (ascending) {
+                    if (values[j] < values[index]) {
+                        index = j;
+                    }
+                } else {
+                    if (values[j] > values[index]) {
+                        index = j;
+                    }
+                }
+            }
+
+            if (index != i) {
+                int temp = values[index];
+                values[index] = values[i];
+                values[i] = temp;
+            }
         }
 
     } // End class selectionSort
@@ -101,9 +120,42 @@ public class ProblemSolutions {
         // ALLOCATES AUXILIARY DATA STRUCTURES (TEMPORARY ARRAYS). IT WILL BE EASIER
         // TO CODE WITH A SPACE COMPLEXITY OF O(N LOG N), WHICH IS FINE FOR PURPOSES
         // OF THIS PROGRAMMING EXERCISES.
+        int n1 = mid - left + 1;
+        int n2 = right - mid;
 
-        return;
+        int[] leftArr = new int[n1];
+        int[] rightArr = new int[n2];
 
+        for (int i = 0; i < n1; i++) {
+            leftArr[i] = arr[left + i];
+        }
+        for (int j = 0; j < n2; j++) {
+            rightArr[j] = arr[mid + 1 + j];
+        }
+
+        int i = 0, j = 0, kIndex = left;
+
+        while (i < n1 && j < n2) {
+            if (leftArr[i] % k == 0) {
+                arr[kIndex++] = leftArr[i++];
+            } else if (rightArr[j] % k == 0) {
+                arr[kIndex++] = rightArr[j++];
+            } else {
+                if (leftArr[i] < rightArr[j]) {
+                    arr[kIndex++] = leftArr[i++];
+                } else {
+                    arr[kIndex++] = rightArr[j++];
+                }
+            }
+        }
+
+        while (i < n1) {
+            arr[kIndex++] = leftArr[i++];
+        }
+
+        while (j < n2) {
+            arr[kIndex++] = rightArr[j++];
+        }
     }
 
 
@@ -155,9 +207,16 @@ public class ProblemSolutions {
     public static boolean asteroidsDestroyed(int mass, int[] asteroids) {
 
         // YOUR CODE GOES HERE, CONSIDER USING ARRAYS.SORT()
+        Arrays.sort(asteroids);
 
-        return false;
-
+        for (int asteroid : asteroids) {
+            if (mass >= asteroid) {
+                mass += asteroid;
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 
 
@@ -193,9 +252,19 @@ public class ProblemSolutions {
     public static int numRescueSleds(int[] people, int limit) {
 
         // YOUR CODE GOES HERE, CONSIDER USING ARRAYS.SORT
+        Arrays.sort(people);
+        int left = 0;
+        int right = people.length - 1;
+        int sleds = 0;
 
-        return -1;
-
+        while (left <= right) {
+            if (people[left] + people[right] <= limit) {
+                left++;
+            }
+            right--;
+            sleds++;
+        }
+        return sleds;
     }
 
 } // End Class ProblemSolutions
